@@ -68,13 +68,47 @@ const TIMELINE_EVENTS = [
   { year: '2031', title: 'Expansão & Liderança', desc: 'Consolidação no mercado corporativo de TI, liderança de equipe e estruturação de novos projetos em tecnologia.' },
 ];
 
+const QR_LINKS = [
+  { label: 'Currículo', detail: 'Versão digital', seed: 17 },
+  { label: 'Portfólio', detail: 'Projetos selecionados', seed: 31 },
+  { label: 'LinkedIn', detail: 'Perfil profissional', seed: 53 },
+];
+
+/** Representação visual fictícia: não codifica nem redireciona para links reais. */
+const FictionalQrCode: React.FC<{ seed: number; label: string }> = ({ seed, label }) => {
+  const size = 21;
+  const isDark = (row: number, column: number) => {
+    const corners = [[0, 0], [0, size - 7], [size - 7, 0]];
+    for (const [top, left] of corners) {
+      if (row >= top && row < top + 7 && column >= left && column < left + 7) {
+        const x = row - top;
+        const y = column - left;
+        return x === 0 || x === 6 || y === 0 || y === 6 || (x >= 2 && x <= 4 && y >= 2 && y <= 4);
+      }
+    }
+    return ((row * 13 + column * 7 + seed + row * column) % 5) < 2;
+  };
+
+  return (
+    <div role="img" aria-label={`QR code fictício para ${label}`} className="w-[76px] h-[76px] p-1.5 rounded-md bg-[#F3E8FF] shadow-[0_0_16px_rgba(168,85,247,0.26)]">
+      <div className="w-full h-full grid grid-cols-[repeat(21,minmax(0,1fr))]">
+        {Array.from({ length: size * size }, (_, index) => {
+          const row = Math.floor(index / size);
+          const column = index % size;
+          return <span key={index} className={isDark(row, column) ? 'bg-[#3B0764]' : 'bg-transparent'} />;
+        })}
+      </div>
+    </div>
+  );
+};
+
 export const ImmersiveFullPage: React.FC<ImmersiveFullPageProps> = ({
   initialSection = 1,
   onBackToHub,
 }) => {
   const [activeSection, setActiveSection] = useState<number>(initialSection);
   const [direction, setDirection] = useState<number>(1); // 1 = forward (right-to-left), -1 = backward (left-to-right)
-  const [selectedTimelineIdx, setSelectedTimelineIdx] = useState<number>(3); // Default to 2026 (Técnico em TI)
+  const [selectedTimelineIdx, setSelectedTimelineIdx] = useState<number>(0);
   const [selectedHobby, setSelectedHobby] = useState<(typeof HOBBIES)[0] | null>(null);
   const isCooldownRef = useRef<boolean>(false);
 
@@ -272,10 +306,10 @@ export const ImmersiveFullPage: React.FC<ImmersiveFullPageProps> = ({
               initial="initial"
               animate="animate"
               exit="exit"
-              className="w-full max-w-6xl 2xl:max-w-7xl mx-auto p-6 md:p-8 lg:p-9 rounded-2xl bg-zinc-900/90 border border-zinc-700/60 backdrop-blur-xl shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-center transform-gpu will-change-transform"
+              className="w-full max-w-6xl 2xl:max-w-7xl mx-auto p-5 md:p-6 lg:p-7 rounded-2xl bg-zinc-900/90 border border-zinc-700/60 backdrop-blur-xl shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-center transform-gpu will-change-transform"
             >
               {/* Left Side Column: Badge [M] MAESTRIA + Large Title */}
-              <div className="lg:col-span-5 space-y-4">
+              <div className="lg:col-span-5 space-y-3">
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-[#A6FF00]/10 border border-[#A6FF00]/40 flex items-center justify-center text-[#A6FF00] font-['Outfit'] font-extrabold text-base md:text-lg">
                     M
@@ -445,28 +479,48 @@ export const ImmersiveFullPage: React.FC<ImmersiveFullPageProps> = ({
                 {/* Right Side: Active Selected Milestone Detail Box */}
                 <div className="lg:col-span-7">
                   <div className="p-4 sm:p-5 rounded-xl bg-zinc-950/60 border border-white/10 backdrop-blur-md shadow-xl flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-[#F97316]/15 border border-[#F97316]/50 flex items-center justify-center text-[#F97316] font-mono font-bold text-sm shrink-0">
-                      {TIMELINE_EVENTS[selectedTimelineIdx].year}
-                    </div>
+                    <div className="w-12 h-12 rounded-lg bg-[#F97316]/15 border border-[#F97316]/50 flex items-center justify-center text-[#F97316] font-mono font-bold text-sm shrink-0">{TIMELINE_EVENTS[selectedTimelineIdx].year}</div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-mono font-medium text-[#F97316] bg-[#F97316]/10 px-2 py-0.5 rounded border border-[#F97316]/20 uppercase">
-                          Marco {selectedTimelineIdx + 1} de {TIMELINE_EVENTS.length}
-                        </span>
+                        <span className="text-[10px] font-mono font-medium text-[#F97316] bg-[#F97316]/10 px-2 py-0.5 rounded border border-[#F97316]/20 uppercase">Marco {selectedTimelineIdx + 1} de {TIMELINE_EVENTS.length}</span>
                         <span className="text-[10px] text-zinc-400 font-mono">CLIQUE NOS PONTOS DA LINHA</span>
                       </div>
-                      <h3 className="font-['Outfit'] font-bold text-base text-white">
-                        {TIMELINE_EVENTS[selectedTimelineIdx].title}
-                      </h3>
-                      <p className="text-xs text-zinc-300 leading-relaxed font-normal">
-                        {TIMELINE_EVENTS[selectedTimelineIdx].desc}
-                      </p>
+                      <h3 className="font-['Outfit'] font-bold text-base text-white">{TIMELINE_EVENTS[selectedTimelineIdx].title}</h3>
+                      <p className="text-xs text-zinc-300 leading-relaxed font-normal">{TIMELINE_EVENTS[selectedTimelineIdx].desc}</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Main Horizontal Timeline Line Box */}
+              {/* Chronological timeline: every milestone is immediately readable. */}
+              <div className="hidden rounded-xl border border-zinc-700 bg-zinc-900 p-4 shadow-xl md:p-5">
+                <h3 className="mb-4 flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-[#F97316]">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  <span>Trajetória completa · 2005 → 2031</span>
+                </h3>
+                <div className="relative max-h-[46vh] overflow-y-auto pr-1.5">
+                  <div className="absolute bottom-4 left-[17px] top-4 w-px bg-gradient-to-b from-[#F97316] via-[#F97316]/60 to-[#F97316]/15" />
+                  <div className="space-y-3">
+                    {TIMELINE_EVENTS.map((event, idx) => (
+                      <article key={`${event.year}-${event.title}`} className="relative grid grid-cols-[36px_minmax(0,1fr)] gap-3">
+                        <div className="relative z-10 flex pt-3 justify-center">
+                          <span className="h-3.5 w-3.5 rounded-full border-[3px] border-zinc-900 bg-[#F97316] shadow-[0_0_12px_rgba(249,115,22,0.75)]" />
+                        </div>
+                        <div className="rounded-xl border border-zinc-700/80 bg-zinc-950/65 px-4 py-3 transition-colors hover:border-[#F97316]/55">
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                            <span className="font-mono text-sm font-extrabold text-[#FDBA74]">{event.year}</span>
+                            <span className="font-['Outfit'] text-sm font-bold text-white">{event.title}</span>
+                            <span className="ml-auto font-mono text-[9px] text-zinc-600">MARCO {String(idx + 1).padStart(2, '0')}</span>
+                          </div>
+                          <p className="mt-1.5 text-xs leading-relaxed text-zinc-400">{event.desc}</p>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Legacy compact navigation, kept out of the visual flow. */}
               <div className="p-5 md:p-6 rounded-xl bg-zinc-900 border border-zinc-700 shadow-xl relative overflow-hidden">
                 <h3 className="text-xs font-mono font-semibold text-[#F97316] uppercase tracking-wider mb-8 flex items-center gap-2">
                   <Sparkles className="w-3.5 h-3.5" />
@@ -596,57 +650,81 @@ export const ImmersiveFullPage: React.FC<ImmersiveFullPageProps> = ({
               </div>
 
               {/* Right Side: Objetivo + Contatos */}
-              <div className="lg:col-span-7 flex flex-col gap-4">
+              <div className="lg:col-span-7 flex flex-col gap-3">
 
                 {/* Objetivo Profissional */}
-                <div className="p-4 rounded-xl bg-zinc-800/60 border border-zinc-600/50 backdrop-blur-md">
+                <div className="order-2 p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-600/50 backdrop-blur-md">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#A855F7] shadow-[0_0_6px_#A855F7]" />
                     <span className="font-mono text-[10px] font-bold text-zinc-300 uppercase tracking-widest">Objetivo Profissional</span>
                   </div>
-                  <p className="text-xs md:text-sm font-normal leading-relaxed text-zinc-200">
+                  <p className="text-xs font-normal leading-relaxed text-zinc-200">
                     Tenho como objetivo estagiar ou atuar como jovem aprendiz nas áreas de <span className="text-[#C084FC] font-semibold">TI e Design</span>, meus principais interesses. Sou uma pessoa analítica, adaptável e proativa, sempre buscando aprender na prática. Tenho qualificações em <span className="text-[#C084FC] font-semibold">design gráfico</span> (Photoshop e Inkscape), além de experiência com automatização e organização de projetos. Onde eu for inserido, vou desempenhar meu papel com dedicação e sempre buscando entregar meu melhor desempenho.
                   </p>
                 </div>
 
                 {/* Divisor */}
-                <div className="flex items-center gap-3">
+                <div className="order-3 flex items-center gap-3">
                   <div className="flex-1 h-px bg-zinc-700" />
                   <span className="font-mono text-[10px] font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">Entre em contato</span>
                   <div className="flex-1 h-px bg-zinc-700" />
                 </div>
 
+                <div className="order-4 grid grid-cols-1 md:grid-cols-3 gap-3">
                 {/* E-mail */}
-                <div className="group flex items-center gap-4 p-4 rounded-xl bg-zinc-800 border border-zinc-600 hover:border-[#A855F7]/70 hover:bg-zinc-750 transition-all duration-300 shadow-md cursor-default">
+                <div className="group flex flex-col items-start gap-2 p-3 rounded-xl bg-zinc-800 border border-zinc-600 hover:border-[#A855F7]/70 hover:bg-zinc-750 transition-all duration-300 shadow-md cursor-default">
                   <div className="w-11 h-11 rounded-lg bg-[#A855F7]/20 border border-[#A855F7]/40 flex items-center justify-center flex-shrink-0">
                     <Mail className="w-5 h-5 text-[#C084FC]" />
                   </div>
                   <div className="flex flex-col min-w-0">
-                    <span className="font-mono text-[10px] font-semibold text-zinc-400 uppercase tracking-widest mb-0.5">E-mail</span>
-                    <span className="font-['Outfit'] text-sm font-bold text-white truncate">gustavomcardoso32@gmail.com</span>
+                    <span className="font-mono text-[9px] font-semibold text-zinc-400 uppercase tracking-[0.16em] mb-0.5">E-mail</span>
+                    <span className="font-['Outfit'] font-bold text-white leading-none tracking-[-0.025em]">
+                      <span className="block text-[13px]">gustavomcardoso32</span>
+                      <span className="block mt-1 text-[11px] text-[#D8B4FE]">@gmail.com</span>
+                    </span>
                   </div>
                 </div>
 
                 {/* Telefone */}
-                <div className="group flex items-center gap-4 p-4 rounded-xl bg-zinc-800 border border-zinc-600 hover:border-[#A855F7]/70 hover:bg-zinc-750 transition-all duration-300 shadow-md cursor-default">
+                <div className="group flex flex-col items-start gap-2 p-3 rounded-xl bg-zinc-800 border border-zinc-600 hover:border-[#A855F7]/70 hover:bg-zinc-750 transition-all duration-300 shadow-md cursor-default">
                   <div className="w-11 h-11 rounded-lg bg-[#A855F7]/20 border border-[#A855F7]/40 flex items-center justify-center flex-shrink-0">
                     <Phone className="w-5 h-5 text-[#C084FC]" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-mono text-[10px] font-semibold text-zinc-400 uppercase tracking-widest mb-0.5">Telefone</span>
-                    <span className="font-['Outfit'] text-xl font-extrabold text-white tracking-wide">(71) 98516-9222</span>
+                    <span className="font-mono text-[9px] font-semibold text-zinc-400 uppercase tracking-[0.16em] mb-0.5">Telefone</span>
+                    <span className="font-['Outfit'] text-[15px] leading-tight font-extrabold text-white tracking-wide">(71) 98516-9222</span>
                   </div>
                 </div>
 
                 {/* Localização */}
-                <div className="group flex items-center gap-4 p-4 rounded-xl bg-zinc-800 border border-zinc-600 hover:border-[#A855F7]/70 hover:bg-zinc-750 transition-all duration-300 shadow-md cursor-default">
+                <div className="group flex flex-col items-start gap-2 p-3 rounded-xl bg-zinc-800 border border-zinc-600 hover:border-[#A855F7]/70 hover:bg-zinc-750 transition-all duration-300 shadow-md cursor-default">
                   <div className="w-11 h-11 rounded-lg bg-[#A855F7]/20 border border-[#A855F7]/40 flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-5 h-5 text-[#C084FC]" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-mono text-[10px] font-semibold text-zinc-400 uppercase tracking-widest mb-0.5">Localização</span>
-                    <span className="font-['Outfit'] text-xl font-extrabold text-white">Salvador, Bahia</span>
-                    <span className="text-xs text-zinc-400 font-mono mt-0.5">Brasil 🇧🇷</span>
+                    <span className="font-mono text-[9px] font-semibold text-zinc-400 uppercase tracking-[0.16em] mb-0.5">Localização</span>
+                    <span className="font-['Outfit'] text-[15px] leading-tight font-extrabold text-white">Salvador, Bahia</span>
+                    <span className="text-[10px] text-zinc-400 font-mono mt-1">Brasil 🇧🇷</span>
+                  </div>
+                </div>
+                </div>
+
+                {/* QR codes de acesso */}
+                <div className="order-1 rounded-xl bg-zinc-800/60 border border-zinc-600/50 p-3">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#A855F7] shadow-[0_0_6px_#A855F7]" />
+                    <span className="font-mono text-[10px] font-bold text-zinc-300 uppercase tracking-widest">Acessos rápidos</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {QR_LINKS.map((item) => (
+                      <div key={item.label} className="flex flex-col items-center gap-2 rounded-lg border border-[#A855F7]/25 bg-purple-950/15 p-3 text-center transition-colors hover:border-[#A855F7]/55">
+                        <FictionalQrCode seed={item.seed} label={item.label} />
+                        <div className="min-w-0 w-full">
+                          <p className="font-['Outfit'] text-sm font-bold text-white">{item.label}</p>
+                          <p className="text-[10px] font-mono text-[#D8B4FE] mt-0.5">{item.detail}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 

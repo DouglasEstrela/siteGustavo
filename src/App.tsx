@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { HeroSection } from './components/HeroSection';
 import { HubSection } from './components/HubSection';
 import { ImmersiveFullPage } from './components/ImmersiveFullPage';
+import { AppErrorBoundary } from './components/AppErrorBoundary';
 
 export type AppView = 'hero' | 'hub' | 'immersive';
 
@@ -27,7 +28,8 @@ export function App() {
   };
 
   return (
-    <main className="w-full min-h-screen bg-[#0d0e12] select-none">
+    <AppErrorBoundary>
+      <main className="w-full min-h-screen bg-[#0d0e12] select-none">
       {currentView === 'hero' && (
         <HeroSection onContinue={handleStartFromHero} />
       )}
@@ -46,7 +48,8 @@ export function App() {
           onBackToHero={handleBackToHero}
         />
       )}
-    </main>
+      </main>
+    </AppErrorBoundary>
   );
 }
 

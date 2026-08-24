@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, ChevronRight, UserCheck } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ChevronRight } from 'lucide-react';
 import Aurora from './Aurora';
 
 interface HubSectionProps {
@@ -72,16 +72,16 @@ export const HubSection: React.FC<HubSectionProps> = ({
         </h1>
 
         <motion.button
-          whileHover={{ scale: 1.04, x: -2 }}
+          whileHover={{ x: -3 }}
           whileTap={{ scale: 0.96 }}
           onClick={onBackToHero}
-          className="px-4 py-2 md:px-5 md:py-2.5 lg:px-6 lg:py-3 rounded-2xl bg-zinc-950/85 backdrop-blur-2xl text-white font-['Outfit'] font-extrabold text-xs md:text-sm tracking-wider uppercase flex items-center gap-3 transition-all duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.6)] cursor-pointer group border border-white/20 hover:border-[#A6FF00]/60 hover:shadow-[0_0_25px_rgba(166,255,0,0.25)]"
+          className="group inline-flex items-center gap-2.5 rounded-xl border border-white/12 bg-[#0c0f16]/85 px-3 py-2.5 font-['Outfit'] text-xs font-bold tracking-wide text-zinc-200 shadow-[0_8px_25px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-all duration-300 hover:border-[#00E5FF]/45 hover:bg-[#101621] hover:text-white hover:shadow-[0_0_22px_rgba(0,229,255,0.12)] md:px-4"
         >
-          <div className="w-6 h-6 md:w-7 md:h-7 rounded-xl bg-[#A6FF00]/20 border border-[#A6FF00]/40 flex items-center justify-center text-[#A6FF00] transition-all duration-300 group-hover:-translate-x-1">
-            <UserCheck className="w-3.5 h-3.5 md:w-4 md:h-4" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-[#00E5FF]/25 bg-[#00E5FF]/10 text-[#67E8F9] transition-transform duration-300 group-hover:-translate-x-0.5">
+            <ArrowLeft className="h-3.5 w-3.5" />
           </div>
-          <span className="font-['Outfit'] font-bold text-xs md:text-sm tracking-widest text-zinc-100 group-hover:text-white transition-colors">
-            Voltar para Apresentação
+          <span className="whitespace-nowrap">
+            Voltar à apresentação
           </span>
         </motion.button>
       </div>
