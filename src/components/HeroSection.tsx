@@ -14,12 +14,15 @@ const HIGHLIGHTS = [
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onContinue }) => {
   return (
-    <section className="relative isolate min-h-screen overflow-hidden bg-[#07090e] px-4 py-6 text-white sm:px-6 lg:px-10">
-      <div className="pointer-events-none absolute inset-0 opacity-50 [background-image:linear-gradient(rgba(148,163,184,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.08)_1px,transparent_1px)] [background-size:44px_44px] [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_78%)]" />
-      <motion.div aria-hidden="true" animate={{ x: ['-12%', '26%', '-12%'], y: ['-8%', '18%', '-8%'], scale: [1, 1.18, 1] }} transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }} className="pointer-events-none absolute -left-48 -top-56 h-[38rem] w-[38rem] rounded-full bg-[#A6FF00]/12 blur-[110px]" />
-      <motion.div aria-hidden="true" animate={{ x: ['12%', '-24%', '12%'], y: ['8%', '-14%', '8%'], scale: [1.15, 0.95, 1.15] }} transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }} className="pointer-events-none absolute -bottom-64 -right-44 h-[42rem] w-[42rem] rounded-full bg-[#8B5CF6]/15 blur-[120px]" />
-      <motion.div aria-hidden="true" animate={{ rotate: [18, 34, 18], x: ['-4%', '8%', '-4%'] }} transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }} className="pointer-events-none absolute left-[32%] top-[-35%] h-[125%] w-40 rotate-[18deg] bg-gradient-to-b from-transparent via-cyan-300/10 to-transparent blur-2xl" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_15%,rgba(7,9,14,0.72)_74%,#07090e_100%)]" />
+    <section className="relative isolate min-h-screen overflow-hidden bg-[#050711] px-4 py-6 text-white sm:px-6 lg:px-10">
+      {/* Mesh aurora + perspective grid: visual depth without a canvas/WebGL dependency. */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_25%,#14234d_0%,#080b18_38%,#050711_74%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-70 [background-image:radial-gradient(rgba(125,211,252,0.6)_1px,transparent_1px)] [background-size:28px_28px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_72%)]" />
+      <motion.div aria-hidden="true" animate={{ x: ['-10%', '24%', '-10%'], y: ['-12%', '8%', '-12%'], scale: [1, 1.14, 1] }} transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }} className="pointer-events-none absolute -left-52 -top-64 h-[43rem] w-[43rem] rounded-full bg-[#00B8FF]/22 blur-[125px]" />
+      <motion.div aria-hidden="true" animate={{ x: ['10%', '-22%', '10%'], y: ['10%', '-10%', '10%'], scale: [1.1, 0.92, 1.1] }} transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }} className="pointer-events-none absolute -bottom-72 -right-44 h-[46rem] w-[46rem] rounded-full bg-[#7C3AED]/23 blur-[135px]" />
+      <motion.div aria-hidden="true" animate={{ opacity: [0.3, 0.7, 0.3], rotate: [12, 22, 12] }} transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }} className="pointer-events-none absolute left-[42%] top-[-42%] h-[145%] w-48 bg-gradient-to-b from-transparent via-[#67E8F9]/20 to-transparent blur-2xl" />
+      <div className="pointer-events-none absolute -bottom-[48%] left-[-20%] h-[80%] w-[140%] origin-top [transform:perspective(500px)_rotateX(62deg)] [background-image:linear-gradient(rgba(34,211,238,0.23)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.23)_1px,transparent_1px)] [background-size:52px_52px] [mask-image:linear-gradient(to_bottom,transparent,black_35%,transparent_85%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_18%,rgba(5,7,17,0.5)_64%,#050711_100%)]" />
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100vh-3rem)] max-w-6xl items-center">
         <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} className="grid w-full grid-cols-1 overflow-hidden rounded-3xl border border-white/12 bg-[#0c0f16]/75 shadow-[0_25px_90px_rgba(0,0,0,0.55)] backdrop-blur-xl lg:grid-cols-12">
