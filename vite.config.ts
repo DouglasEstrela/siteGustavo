@@ -10,31 +10,35 @@ export default defineConfig({
     host: true,
   },
   build: {
-    // Increase warning limit slightly since we have heavy 3D libs
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
-        manualChunks: {
-          // React core
-          'vendor-react': ['react', 'react-dom'],
-          // Three.js (heavy 3D lib)
-          'vendor-three': ['three', '@types/three'],
-          // Animation libs
-          'vendor-animation': ['framer-motion', 'gsap'],
-          // Particles
-          'vendor-particles': [
-            '@tsparticles/engine',
-            '@tsparticles/react',
-            '@tsparticles/slim',
-          ],
-          // OGL (WebGL)
-          'vendor-ogl': ['ogl'],
-          // UI libs
-          'vendor-ui': ['lucide-react', 'embla-carousel-react'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react-dom') || id.includes('/react/')) {
+              return 'vendor-react'
+            }
+            if (id.includes('/three/')) {
+              return 'vendor-three'
+            }
+            if (id.includes('framer-motion') || id.includes('gsap')) {
+              return 'vendor-animation'
+            }
+            if (id.includes('@tsparticles')) {
+              return 'vendor-particles'
+            }
+            if (id.includes('/ogl/')) {
+              return 'vendor-ogl'
+            }
+            if (id.includes('lucide-react') || id.includes('embla-carousel')) {
+              return 'vendor-ui'
+            }
+          }
         },
       },
     },
   },
 })
+
 
 
