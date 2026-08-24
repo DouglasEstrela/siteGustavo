@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: #0d0e12;
+    color: #f3f4f6;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090a0f;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* Custom FullPage.js styles */
+.fp-watermark {
+  display: none !important;
+}
+
+.fp-controlArrow.fp-prev {
+  border-width: 14px 18px 14px 0 !important;
+  border-color: transparent rgba(255, 255, 255, 0.7) transparent transparent !important;
+  left: 20px !important;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.fp-controlArrow.fp-prev:hover {
+  transform: scale(1.15);
+  border-color: transparent #ffffff transparent transparent !important;
+}
+
+.fp-controlArrow.fp-next {
+  border-width: 14px 0 14px 18px !important;
+  border-color: transparent transparent transparent rgba(255, 255, 255, 0.7) !important;
+  right: 20px !important;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.fp-controlArrow.fp-next:hover {
+  transform: scale(1.15);
+  border-color: transparent transparent transparent #ffffff !important;
+}
+
+.fp-slidesNav.fp-bottom {
+  bottom: 24px !important;
+}
+.fp-slidesNav ul li a span, .fp-slidesNav ul li:hover a span {
+  background: rgba(255, 255, 255, 0.4) !important;
+}
+.fp-slidesNav ul li a.active span {
+  background: #ffffff !important;
+  transform: scale(1.4);
+}
+
+/* Background Gradients */
+.bg-tech-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.bg-light-tech-grid {
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(18, 20, 29, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Glow Effects */
+.glow-green {
+  box-shadow: 0 0 25px rgba(166, 255, 0, 0.35);
+}
+.glow-red {
+  box-shadow: 0 0 25px rgba(139, 30, 30, 0.45);
+}
+.glow-orange {
+  box-shadow: 0 0 25px rgba(255, 77, 46, 0.45);
+}
+.glow-purple {
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.45);
+}
+
+/* Neon Text Glow */
+.text-glow-green {
+  text-shadow: 0 0 12px rgba(166, 255, 0, 0.6);
+}
+.text-glow-purple {
+  text-shadow: 0 0 16px rgba(139, 92, 246, 0.7);
+}
+.text-glow-orange {
+  text-shadow: 0 0 14px rgba(255, 77, 46, 0.7);
+}
